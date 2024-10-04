@@ -20,7 +20,7 @@ pifile = "pi_decimals.txt"
 def cipher(contents):
     #We open the file where the public key is stored
     with open("public_key.pem", "rb") as f:
-        public_key = serialization.load_pem_public_key(f.read(),backend=default_backend())#Store the key
+        public_key = serialization.load_pem_public_key(f.read())#Store the key
 
     # Encrypt the message using RSA
     ciphertext = public_key.encrypt(contents.encode(),#encode into bytes
@@ -45,30 +45,35 @@ def picover(contents):
     cover = ""
     length = len(contents)
     if Use_time:
-            f = fraction_of_day(Outputfile)
-    if length > 10000:
+            frac = fraction_of_day(Outputfile)
+    if length > (10000 - 2):
         n_of_pi_decimals(length)
-        with open("npi_decimals.txt", "rb") as f:
-            pipositions = f.read(length)
+        with open("npi_decimals.txt", "r") as f:
+            pipositions = f.read(length+2)[2:]#read the length needed skipping the "3." in order to only have the decimals of pi
     else:
-        with open("pi_decimals.txt", "rb") as f:
-            pipositions = f.read(length)
-    for i in length:
+        with open("pi_decimals.txt", "r") as f:
+            pipositions = f.read(length+2)[2:]
+
+    pipositions = list(pipositions)
+    for i in range(length):
         random_string = ''.join(random.choices(string.ascii_letters + string.digits, k=10))
         if Use_time:
-            substitute_char(random_string,pipositions*f,contents[i])
+            temp = int(int(pipositions[i])*frac)
+            substitute_char(random_string,temp,contents[i])
         else:
-            substitute_char(random_string,pipositions,contents[i])
+            substitute_char(random_string,int(pipositions[i]),contents[i])
         
-        cover+= contents
+        cover= cover + str(random_string)
     
     return cover
 
 #Substitute chars
-def substitute_char(s, i, new_char):
-    if 0 <= i < len(s):
-        s = s[:i] + new_char + s[i+1:]
-    return s
+def substitute_char(s, position, new_char):
+    new_char = str(new_char) #As contents may have numbers
+    if position < 0 or position >= len(s):#Just in case something weird happens
+        return "Position out of range"
+    new_string = s[:position] + new_char + s[position+1:]
+    return new_string
 
 def fraction_of_day(filename):
     now = datetime.now()
@@ -78,7 +83,7 @@ def fraction_of_day(filename):
     seconds = now.second
 
     #We write it to the payload file in order to place it in the metadata
-    with open(filename, 'w') as f:
+    with open(filename, 'w+') as f:
         f.write(now.strftime("%H:%M:%S \n"))
 
     #we get the seconds since 0:0:00
@@ -106,6 +111,7 @@ def main():
     #specify number of decimals(-1)
     if len(sys.argv) >= 3:
         if sys.argv[2] == 'y':
+            global Use_time 
             Use_time = True
         
     try:
@@ -113,21 +119,19 @@ def main():
         with open(filename, 'r') as input_file:
             contents = input_file.read()
 
-        print("hi1-------------")
+    
         #Step 1 Cypher: cypher the contents
         s1contents = cipher(contents)
 
-        print("hello2------------")
+   
         #Step 2 Base32(Linguistics): encode the contents to base 32
         s2contents = base64.b32encode(s1contents)
 
-
-        print("hi3-------------")
+        s2contents = s2contents.decode('utf-8')
         #Step 3 Pi(Linguistics):use pi decimals to "cover" the base 32
         #& Step 4 TimeFraction: use a fraction of pi depending on the date time of the execution to hide it even better 
         #If this option is ativated (using 'y') it will leave one line with the current time of the execution
         s3contents = picover(s2contents)
-        print("hi4??-------------")
 
     except FileNotFoundError:
         print(f"Error: The file '{filename}' was not found.")
@@ -135,7 +139,8 @@ def main():
     
     #Finalstep
     try:
-        with open(Outputfile,'w')as output_file:
+        mode = 'a+' if Use_time else 'w+'
+        with open(Outputfile,mode)as output_file:
             output_file.write(s3contents)
     except FileNotFoundError:
         print(f"Error: The file '{filename}' was not found.")

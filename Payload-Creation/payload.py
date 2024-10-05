@@ -84,7 +84,7 @@ def fraction_of_day(filename):
 
     #We write it to the payload file in order to place it in the metadata
     with open(filename, 'w+') as f:
-        f.write(now.strftime("%H:%M:%S \n"))
+        f.write(now.strftime("TIME %H:%M:%S \n"))
 
     #we get the seconds since 0:0:00
     current_seconds = hours * 3600 + minutes * 60 + seconds

@@ -16,16 +16,31 @@ Cipherkey = b'ArbitraryKey'#Not used
 Outputfile = "payload.txt"
 pifile = "pi_decimals.txt"
 
+def split_string(str):
+    # We split the string into chunks of 50characters 
+    return [str[i:i+50] for i in range(0, len(str), 50)]
+
 #Step 1 cipher text
 def cipher(contents):
+    ciphertext = bytearray()
     #We open the file where the public key is stored
     with open("public_key.pem", "rb") as f:
         public_key = serialization.load_pem_public_key(f.read())#Store the key
 
-    # Encrypt the message using RSA
-    ciphertext = public_key.encrypt(contents.encode(),#encode into bytes
+    
+    chunks = split_string(contents)
+
+    for c in chunks:
+       ciphertext += public_key.encrypt(c.encode(),#encode into bytes
                                     padding.OAEP(mgf=padding.MGF1(algorithm=hashes.SHA256()),algorithm=hashes.SHA256(),label=None)
                                     )
+
+
+
+    # Encrypt the message using RSA
+    #ciphertext = public_key.encrypt(contents.encode(),#encode into bytes
+    #                                padding.OAEP(mgf=padding.MGF1(algorithm=hashes.SHA256()),algorithm=hashes.SHA256(),label=None)
+    #                                )
         #We are using Optical Assymetric Encryption Padding (Padding scheme to assure randomness -this padding is NOT deterministic-)
         # mgf=padding.MGF1(algorithm=hashes.SHA256())
         # MGF1 (Mask Generation Function 1): 

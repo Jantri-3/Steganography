@@ -37,12 +37,12 @@ If this option is ativated (using 'y') it will leave one line in the payload.txt
 
 In order to run the payload creation you will need to add the message in "plaintext.txt", add to the /Payload-Creation the public key of the receiver of the message with the name "public_key.pem",and finally run payload.py.   
 The usage of payload.py is :  
-    For the normal use:  
-        payload.py plaintext.txt  
-    For the use including the time (include step4):  
-        payload.py plaintext.txt y  
+- For the normal use:  
+    - payload.py plaintext.txt  
+- For the use including the time (include step4):  
+    - payload.py plaintext.txt y  
 
- The result will be stored in payload.txt
+The result will be stored in payload.txt
 
 
 ## Embedding paylaods into images
@@ -50,37 +50,37 @@ The usage of payload.py is :
 For checking how the image behaves depending on the payload embedded, we have modified the same image embedding it with 3 different  payloads a short one of 2000 characters and a longer one with 8.240 characters  and the even longer with 32.800 chars.  
 We have first checked the original png LSB 0’s and 1’s  
 
-Original image  
-Original number of 0's= 174887  
-Original number of 1's= 231103  
-Total number of 0's+1's befroe processing: 405990  
-Percentage of 0's 43.07667676543757%  
-Percentage of 1's 56.92332323456243%  
-Image embedded with short payload (SP)  
-Processed number of 0's= 173169  
-Processed number of 1's= 232821  
-Total number of 0's+1's after processing: 405990  
-Percentage of 0's 42.65351363334072%  
-Percentage of 1's 57.34648636665928%  
-Image embedded with long payload (LP)  
-Processed number of 0's= 169647  
-Processed number of 1's= 236343  
-Total number of 0's+1's after processing: 405990  
-Percentage of 0's 41.786004581393634%  
-Percentage of 1's 58.213995418606366%  
-Even longer payload (ELP)  
-Processed number of 0's= 183493  
-Processed number of 1's= 222497  
-Total number of 0's+1's after processing: 405990  
-Percentage of 0's 45.196433409689895%  
-Percentage of 1's 54.803566590310105%  
+- 🟢Original image🟢  
+    - Original number of 0's= 174887  
+    - Original number of 1's= 231103  
+    - Total number of 0's+1's befroe processing: 405990  
+    - Percentage of 0's 43.07667676543757%  
+    - Percentage of 1's 56.92332323456243%  
+- 🟡Image embedded with short payload (SP)🟡  
+    - Processed number of 0's= 173169  
+    - Processed number of 1's= 232821  
+    - Total number of 0's+1's after processing: 405990  
+    - Percentage of 0's 42.65351363334072%  
+    - Percentage of 1's 57.34648636665928%  
+- 🟠Image embedded with long payload (LP)🟠  
+    - Processed number of 0's= 169647  
+    - Processed number of 1's= 236343  
+    - Total number of 0's+1's after processing: 405990  
+    - Percentage of 0's 41.786004581393634%  
+    - Percentage of 1's 58.213995418606366%  
+- 🔴Even longer payload (ELP)🔴  
+    - Processed number of 0's= 183493  
+    - Processed number of 1's= 222497  
+    - Total number of 0's+1's after processing: 405990  
+    - Percentage of 0's 45.196433409689895%  
+    - Percentage of 1's 54.803566590310105%  
   
 After a comparison we can see that this modifications tended to make the difference between images (0’s and 1’s change even more)  
-Original = 43/56.9 ratio  
-SP = 42.65/57.34 ratio  
-LP = 41.78/58.21 ratio  
+🟢Original = 43/56.9 ratio  
+🟡SP = 42.65/57.34 ratio  
+🟠LP = 41.78/58.21 ratio  
 However for a really big payload this ratio was drastically reduced  
-ELP = 45.19/54.80  
+🔴ELP = 45.19/54.80  
 Still far from a 50/50 ratio but still not a really significant change from the original image  
 form 43 to 45.2 and from 56.9 to 54.8  
   

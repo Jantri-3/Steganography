@@ -115,8 +115,8 @@ def fraction_of_day(filename):
 def main():
     # Check if the filename is passed as an argument
     if len(sys.argv) < 2:
-        print("Usage: python script.py <filename> [y]")
-        print("filename form where to read the plaintext")
+        print("Usage: python payload.py <filename> [y]")
+        print("filename from where to read the plaintext")
         print("y: in order to have more security, use this option in order for the pi decimals to be multiplied by a fraction of the timedate")
         sys.exit(1)
 

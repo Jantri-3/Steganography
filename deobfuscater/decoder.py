@@ -2,6 +2,12 @@
 import sys
 # For processing and manipulating image files (extracting) 
 import imageio as iio
+# For processing and manipulating text (decoding/decrypting)
+import base64
+from cryptography.hazmat.primitives import serialization
+from cryptography.hazmat.primitives.asymmetric import padding
+from cryptography.hazmat.primitives import hashes
+from mpmath import mp
 
 ### AUXILIARY FUNCTIONS ###
 
@@ -26,6 +32,24 @@ def load_image(image_path):
         else:
             sys.exit(f"An error occurred: {error}.")
 
+def generate_pifile(length, frac, filepath):
+
+    # Just in case
+    try:
+        length = int(length)
+    except ValueError as error:
+        sys.exit("Interpreted file length cannot be parsed to an integer. Please report this to a developer!")
+    
+    mp.dps = length + 1
+    pi_value = str(mp.pi * frac)
+
+    with open(filepath, "w") as file:
+        file.write(pi_value)
+
+###
+
+### MAIN FUNCTIONS ###
+
 # Takes a stegomedium (PNG flag) and a corresponding steganography method (e.g.: LSB) and
 # returns the payload within.
 def extract_payload(stegomedium, method):
@@ -39,15 +63,66 @@ def extract_payload(stegomedium, method):
 # Takes a payload and decodes it, reversing the steps taken in Payload-Creation (by Jantri) and
 # returning the decoded original message.
 def decode_payload(payload):
-    # TODO
-    # Steps to take:
-    # 1. Determine whether time-based encoding was used by analyzing the first section of the payload.
-    # 2. Getting the characters pertaining to the actual encoded message, discarding the random junk.
-    # 3. Base-32 decode the results obtained above.
-    # 4. Decipher the results obtained above, as per the encryption mechanism used in Payload-Creation.
-    #
-    # Will be done later
-    pass
+
+    ### Step 1: extract the actual payload from the input (method will depend on whether time-based encoding is used)
+    aux_filepath = "auxconstant.txt"
+    
+    if payload[:4] == "TIME":
+        _, timestr, payload = payload.split(" ")
+        hour, minute, second = timestr.split(":")
+
+        num_of_seconds = hour * 3600 + minute * 60 + second
+        timefrac = num_of_seconds / (24 * 3600)
+
+        length = len(payload) # Does not include "TIME hh:mm:ss "
+        generate_pifile(length, frac = timefrac, filepath = aux_filepath)
+
+        with open(aux_filepath, "r") as file:
+            decimals = file.read(length + 2)[2:]
+        decimals = list(decimals)
+
+    else:
+        length = len(payload)
+        generate_pifile(length, frac = 1, filepath = aux_filepath)
+
+        with open(aux_filepath, "r") as file:
+            decimals = file.read(length + 2)[2:]
+        decimals = list(decimals)
+
+    # Obfuscation logic example (to hide the first character of the encoded payload): 
+    # - generate a 10 character long string full of random characters
+    # - get the first (index=0) decimal digit of the constant we picked (pi * frac, where frac = 1 if no time encoding is used)
+    # - use that digit as an index to pick which of the 10 random characters we're going to replace with the first character of the payload
+    # - pseudocode: random_string[k] = encoded_payload[0], where k = decimals[0]
+
+    # Deobfuscation logic example (bearing in mind we know the constant used to generate decimals[]):
+    # - for every 10-character 'chunk', extract the character whose index matches the corresponding digit of the constant
+    result = ""
+    for i in range(int(length // 10)):
+        offset = decimals[i]
+        result += payload[10*i+offset]
+    
+    # Since I want to use "payload" as my variable from here onwards, we're going to replace the original value with the extraction result
+    payload = result
+
+    ### Step 2: undo the base32-encoding step
+    payload = payload.encode('utf-8')
+    payload = base64.b32decode(payload)
+
+    ### Step 3: decypher the payload
+    with open("private_key.pem", "rb") as f:
+        private_key = serialization.load_pem_private_key(f.read(), password = None)
+
+    chunks = [payload[i:i+50] for i in range(0, len(payload), 50)]
+
+    plaintext = ""
+    for chunk in chunks:
+        plaintext += private_key.decrypt(
+            chunk.decode(), 
+            padding.OAEP(mgf=padding.MGF1(algorithm=hashes.SHA256()),algorithm=hashes.SHA256(),label=None)
+        )
+    
+    return plaintext
 
 # ASCII art which gets printed every time when the program is executed
 def print_ascii_art():

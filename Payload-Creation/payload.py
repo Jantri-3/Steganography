@@ -7,6 +7,8 @@ from cryptography.hazmat.primitives import hashes
 import base64
 from datetime import datetime
 from pi_decimals import n_of_pi_decimals 
+from pi_decimals import frac_of_pi_decimals
+
 #For step3 random chars
 import random
 import string 
@@ -61,13 +63,23 @@ def picover(contents):
     length = len(contents)
     if Use_time:
             frac = fraction_of_day(Outputfile)
+            frac_of_pi_decimals(frac,length)
+
     if length > (10000 - 2):
-        n_of_pi_decimals(length)
-        with open("npi_decimals.txt", "r") as f:
-            pipositions = f.read(length+2)[2:]#read the length needed skipping the "3." in order to only have the decimals of pi
+        if Use_time:
+            with open("timepi_decimals.txt", "r") as f:
+                pipositions = f.read(length+2)[2:]#read the length needed skipping the "3." in order to only have the decimals of pi
+        else:
+            n_of_pi_decimals(length)
+            with open("npi_decimals.txt", "r") as f:
+                pipositions = f.read(length+2)[2:]#read the length needed skipping the "3." in order to only have the decimals of pi
     else:
-        with open("pi_decimals.txt", "r") as f:
-            pipositions = f.read(length+2)[2:]
+        if Use_time:
+            with open("timepi_decimals.txt", "r") as f:
+                pipositions = f.read(length+2)[2:]#read the length needed skipping the "3." in order to only have the decimals of pi
+        else:
+            with open("pi_decimals.txt", "r") as f:
+                pipositions = f.read(length+2)[2:]
 
     pipositions = list(pipositions)
     for i in range(length):

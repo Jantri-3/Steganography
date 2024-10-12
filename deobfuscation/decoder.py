@@ -118,6 +118,10 @@ def decode_payload(payload):
         _, timestr, payload = payload.split(" ")
         hour, minute, second = timestr.split(":")
 
+        hour = int(hour)
+        minute = int(minute)
+        second = int(second)
+
         num_of_seconds = hour * 3600 + minute * 60 + second
         timefrac = int(num_of_seconds) / (24 * 3600)
 

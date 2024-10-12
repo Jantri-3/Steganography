@@ -40,6 +40,7 @@ def load_image(image_path):
             sys.exit(f"An error occurred: {error}.")
 
 def generate_pifile(length, frac, filepath):
+    print(frac)
 
     # Just in case
     try:
@@ -118,7 +119,7 @@ def decode_payload(payload):
         hour, minute, second = timestr.split(":")
 
         num_of_seconds = hour * 3600 + minute * 60 + second
-        timefrac = num_of_seconds / (24 * 3600)
+        timefrac = int(num_of_seconds) / (24 * 3600)
 
         length = len(payload) # Does not include "TIME hh:mm:ss "
         generate_pifile(length, frac = timefrac, filepath = aux_filepath)
@@ -146,9 +147,6 @@ def decode_payload(payload):
     result = ""
     for i in range(int(length // 10)):
         offset = decimals[i]
-        print("result "+result)
-        print("offset "+offset)
-        print("payload "+payload[(10*i)+int(offset)])
         result += str(payload[10*i+int(offset)])
     
     # Since I want to use "payload" as my variable from here onwards, we're going to replace the original value with the extraction result

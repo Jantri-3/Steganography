@@ -35,8 +35,6 @@ def prepare_payload(payload_path):
             payload += stegoEnd
     except Exception as e:
         handle_errors(e)
-    
-    print(payload)
 
     # Convert the payload to binary
     #
@@ -48,8 +46,6 @@ def prepare_payload(payload_path):
     # with zeros is applied
     #
     payload_binary = ''.join(format(byte, '08b') for byte in payload.encode('utf-8'))
-
-    print(payload_binary)
 
     return payload_binary
 

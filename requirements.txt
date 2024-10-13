@@ -1,0 +1,10 @@
+Imageio==2.35.1
+cryptography.hazmat.primitives
+cryptography.hazmat.primitives.asymmetric
+cryptography.hazmat.primitives
+base64
+datetime
+random
+string
+PIL
+mpmath

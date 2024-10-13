@@ -1,7 +1,33 @@
 # Steganography
 Cybersecurity Overview project 2024
 
-## Payload Creation
+# Problem statement
+
+
+# How to use 
+First of all please, do $pip install -r requirements.txt  
+
+## Creating the payload
+In order to run the payload creation you will need to:
+- add the message you want to hide in "payload_creation/plaintext.txt"  
+- add the public key of the receiver of the message as "payload_creation/public_key.pem"
+- finally run payload.py 
+
+The usage of payload.py is:  
+- For the normal use:  
+    - python3 payload.py plaintext.txt  
+- For the use including the time (include step4):  
+    - python3 payload.py plaintext.txt y  
+
+The result will be stored in payload.txt  
+
+## Payload embedding  
+## Statistics  
+## Extracting the payload  
+## Revealing the plaintext  
+
+# Documentation  
+## Payload Creation (Done by Juan Trillo)
 
 ### Step 1 Cypher
 We first cypher the contents of plaintext.txt
@@ -25,7 +51,7 @@ another random string 1234567890
 next pidecimal = 4  
 in pos 4 we write 'o'  
 1234o67890  
-cover+ string  
+cover + string  
 ...  
 
 
@@ -35,18 +61,11 @@ being 0 = 0:00:00
 and 1 = 23:59:59  
 If this option is ativated (using 'y') it will leave one line in the payload.txt with the current time of the execution to hide it in the metadata  
 
-In order to run the payload creation you will need to add the message in "plaintext.txt", add to the /Payload-Creation the public key of the receiver of the message with the name "public_key.pem",and finally run payload.py.   
-The usage of payload.py is :  
-- For the normal use:  
-    - payload.py plaintext.txt  
-- For the use including the time (include step4):  
-    - payload.py plaintext.txt y  
-
-The result will be stored in payload.txt
-
 
 ## Embedding paylaods into images
-### Quick analysis of the modifications made to the images:
+
+
+### Quick analysis of the modifications made to the images: (Done by Juan Trillo)
 For checking how the image behaves depending on the payload embedded, we have modified the same image embedding it with 3 different  payloads a short one of 2000 characters and a longer one with 8.240 characters  and the even longer with 32.800 chars.  
 We have first checked the original png LSB 0’s and 1’s  
 
@@ -87,3 +106,15 @@ form 43 to 45.2 and from 56.9 to 54.8
 We could say that the embedded png will change their distribution not more than a 3% even in extreme cases (as a non existent payload will result in no change at all in the distribution)  
   
 For replication, we have stored the program to extract this data (NormalDistributionCheck.py) and 3 different images (Original, SP and ELP)  
+statistics
+extract payload
+reveal plaintext
+
+
+
+
+
+
+
+### Room improvement (Pier)
+...

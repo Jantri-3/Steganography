@@ -20,7 +20,7 @@ pifile = "pi_decimals.txt"
 
 def split_string(str):
     # We split the string into chunks of 50characters 
-    return [str[i:i+50] for i in range(0, len(str), 50)]
+    return [str[i:i+190] for i in range(0, len(str), 190)]
 
 #Step 1 cipher text
 def cipher(contents):
@@ -77,7 +77,7 @@ def picover(contents):
         if Use_time:
             with open("timepi_decimals.txt", "r") as f:
                 pipositions = f.read(length+2)[2:]#read the length needed skipping the "3." in order to only have the decimals of pi
-                print(pipositions)
+                #print(pipositions)
         else:
             with open("pi_decimals.txt", "r") as f:
                 pipositions = f.read(length+2)[2:]
@@ -87,7 +87,7 @@ def picover(contents):
     for i in range(length):
         random_string = ''.join(random.choices(string.ascii_letters + string.digits, k=10))
         random_string = substitute_char(random_string,int(pipositions[i]),contents[i])
-        print(cover)
+        #print(cover)
         
         cover= cover + str(random_string)
     
@@ -154,10 +154,14 @@ def main():
         s2contents = base64.b32encode(s1contents)
 
         s2contents = s2contents.decode('utf-8')
+        print("\n\n\n\n\nBEFORE PICOVER:\n")
+        print(s2contents)
         #Step 3 Pi(Linguistics):use pi decimals to "cover" the base 32
         #& Step 4 TimeFraction: use a fraction of pi depending on the date time of the execution to hide it even better 
         #If this option is ativated (using 'y') it will leave one line with the current time of the execution
         s3contents = picover(s2contents)
+        print("\n\n\nAFTER PICOVER:\n")
+        print(s3contents)
 
     except FileNotFoundError:
         print(f"Error: The file '{filename}' was not found.")

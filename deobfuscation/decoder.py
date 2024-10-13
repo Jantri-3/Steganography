@@ -164,16 +164,18 @@ def decode_payload(payload):
     with open("private_key.pem", "rb") as f:
         private_key = serialization.load_pem_private_key(f.read(), password = None)
 
-    chunks = [payload[i:i+50] for i in range(0, len(payload), 50)]
+    chunks = [payload[i:i+256] for i in range(0, len(payload), 256)]
 
-    plaintext = ""
+    decrypted = bytearray()
     for chunk in chunks:
-        plaintext += private_key.decrypt(
-            chunk.decode(), 
+        decrypted += private_key.decrypt(
+            chunk, 
             padding.OAEP(mgf=padding.MGF1(algorithm=hashes.SHA256()),algorithm=hashes.SHA256(),label=None)
         )
     
-    return plaintext
+    result = decrypted.decode()
+
+    return result
 
 # ASCII art which gets printed every time when the program is executed
 def print_ascii_art():

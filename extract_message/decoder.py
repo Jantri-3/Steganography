@@ -8,6 +8,7 @@ from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import padding
 from cryptography.hazmat.primitives import hashes
 from mpmath import mp
+import os
 
 stegoSignature = "Sz12&%OwC;hYRF:CVs3+5"
 stegoEnd = "Eg$r4%jjK/.U8('Pq9!B4"
@@ -176,6 +177,10 @@ def decode_payload(payload):
         )
     
     result = decrypted.decode()
+
+    # Clean up temporary files
+    if os.path.isfile(aux_filepath):
+        os.remove(aux_filepath)
 
     return result
 

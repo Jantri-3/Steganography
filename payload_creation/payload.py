@@ -77,18 +77,17 @@ def picover(contents):
         if Use_time:
             with open("timepi_decimals.txt", "r") as f:
                 pipositions = f.read(length+2)[2:]#read the length needed skipping the "3." in order to only have the decimals of pi
+                print(pipositions)
         else:
             with open("pi_decimals.txt", "r") as f:
                 pipositions = f.read(length+2)[2:]
+                
 
     pipositions = list(pipositions)
     for i in range(length):
         random_string = ''.join(random.choices(string.ascii_letters + string.digits, k=10))
-        if Use_time:
-            temp = int(int(pipositions[i])*frac)
-            substitute_char(random_string,temp,contents[i])
-        else:
-            substitute_char(random_string,int(pipositions[i]),contents[i])
+        random_string = substitute_char(random_string,int(pipositions[i]),contents[i])
+        print(cover)
         
         cover= cover + str(random_string)
     

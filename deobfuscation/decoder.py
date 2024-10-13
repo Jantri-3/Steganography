@@ -148,6 +148,8 @@ def decode_payload(payload):
 
     # Deobfuscation logic example (bearing in mind we know the constant used to generate decimals[]):
     # - for every 10-character 'chunk', extract the character whose index matches the corresponding digit of the constant
+    payload = payload.strip()
+    
     result = ""
     for i in range(int(length // 10)):
         offset = decimals[i]

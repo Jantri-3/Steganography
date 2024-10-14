@@ -4,25 +4,25 @@ from PIL import Image
 
 
 def count_lsb(image_path):
-    # Open the image
+    # we first open the image
     img = Image.open(image_path)
     
-    # Convert image to RGB if not already in that mode
+    # then convert image to RGB if not already in that mode
     if img.mode != 'RGB' and img.mode != 'RGBA':
         img = img.convert('RGBA')
     
-    # Get pixel data
+    # we get the pixel data
     pixels = img.getdata()
     
     count_0 = 0
     count_1 = 0
     
-    # Iterate over each pixel
+    # iterating over each pixel
     for pixel in pixels:
-        # Iterate over each channel (R, G, B, A)
-        for value in pixel[:3]:  # Ignore alpha channel if present ([:3] for RGB, [:4] for RGBA)
-            # Get the LSB by using bitwise AND with 1
-            lsb = value & 1
+        # and over each channel (R, G, B, "A")
+        for value in pixel[:3]:  # We just ignore alpha channel (A) if present ([:3] for RGB, [:4] for RGBA)
+            # W take the LSB by using bitwise AND with 1 
+            lsb = value & 1 # 1 AND 1 = 1 else 0 AND 1 = 0
             
             if lsb == 0:
                 count_0 += 1
@@ -33,7 +33,7 @@ def count_lsb(image_path):
 
 
 def main():
-    # Check if the filename is passed as an argument
+    # Check if the correct usage of the program is performed
     if len(sys.argv) < 2:
         print("Usage: python NormalDistributionCheck.py <Processed_filename> <Original_filename>")
         print("filename of the payload embedded image .png")
@@ -42,7 +42,7 @@ def main():
 
 
     image_path = sys.argv[2]
-    count_0, count_1 = count_lsb(image_path)
+    count_0, count_1 = count_lsb(image_path)#get the counts of 0's and 1's
     total = count_0 + count_1
     print("Original image ---------------------------------------------")
     print(f"Original number of 0's= {count_0}")

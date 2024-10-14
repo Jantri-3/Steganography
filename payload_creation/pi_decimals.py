@@ -3,25 +3,21 @@ from mpmath import mp
 def n_of_pi_decimals(n):
     n = int(n)
 
-    # Set the number of decimal places
+    # we set the number of decimal places +2  as "3." is "counted" aswell
     mp.dps = n + 2
 
-    # Store Pi with the set precision
-    pi_value = str(mp.pi)
+    pi_value = str(mp.pi) #store Pi
 
-    # Write Pi to a text file
-    with open("npi_decimals.txt", "w") as f:
+    with open("npi_decimals.txt", "w+") as f: #write Pi into a file
         f.write(pi_value)
 
 def frac_of_pi_decimals(frac,n):
     n = int(n)
 
-    # Set the number of decimal places
+    # we set the number of decimal places +2 "x." is "counted" aswell
     mp.dps = n + 2
 
-    # Store Pi with the set precision
-    pi_value = str(mp.pi*frac)
+    pi_value = str(mp.pi*frac) #store Pi * frac of day 
 
-    # Write Pi to a text file
-    with open("timepi_decimals.txt", "w") as f:
+    with open("timepi_decimals.txt", "w+") as f: #write it onto corresponding file
         f.write(pi_value)

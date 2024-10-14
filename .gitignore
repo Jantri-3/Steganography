@@ -1,0 +1,12 @@
+# Exclude the virtual environment
+venv/
+
+# Exclude the generated .egg-info files
+*.egg-info/
+
+# Exclude the test folder 
+testing/
+
+# Escludere le cartelle __pycache__ (file cache di Python)
+__pycache__/
+*.py[cod]

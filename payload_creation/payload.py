@@ -7,8 +7,8 @@ from cryptography.hazmat.primitives import hashes
 #Used for encoding in base 32 (Step 2)
 import base64
 from datetime import datetime
-from pi_decimals import n_of_pi_decimals 
-from pi_decimals import frac_of_pi_decimals
+
+from payload_creation import pi_decimals
 
 #For step3 random chars
 import random
@@ -18,6 +18,7 @@ Use_time = False
 Cipherkey = b'ArbitraryKey'
 Outputfile = "payload.txt"
 pifile = "pi_decimals.txt"
+output_mode = "write"
 
 def split_string(str):
     # We split the string into chunks of 190 characters this number should be changed depending on the pair of keys legnght used!!!
@@ -64,7 +65,7 @@ def picover(contents):
     length = len(contents)
     if Use_time:
             frac = fraction_of_day(Outputfile) #calculate (current seconds since 00:00:00)/(total seconds in a day)
-            frac_of_pi_decimals(frac,length)
+            pi_decimals.frac_of_pi_decimals(frac,length)
 
     if length > (10000 - 2):
         if Use_time:
@@ -73,7 +74,7 @@ def picover(contents):
                 os.remove("timepi_decimals.txt")
                 
         else:
-            n_of_pi_decimals(length)
+            pi_decimals.n_of_pi_decimals(length)
             with open("npi_decimals.txt", "r") as f:
                 pipositions = f.read(length+2)[2:]#read the length needed skipping the "3." in order to only have the decimals of pi
                 os.remove("npi_decimals.txt")
@@ -167,14 +168,17 @@ def main():
         sys.exit(1)
     
     #Finalstep
-    try:
-        # we create the output file and if time has been used  we just append the payload
-        mode = 'a+' if Use_time else 'w+'
-        with open(Outputfile,mode)as output_file:
-            output_file.write(s3contents)
-    except FileNotFoundError:
-        print(f"Error: The file '{filename}' was not found.")
-        sys.exit(1)
+    if output_mode == "write":
+        try:
+            # we create the output file and if time has been used  we just append the payload
+            mode = 'a+' if Use_time else 'w+'
+            with open(Outputfile,mode)as output_file:
+                output_file.write(s3contents)
+        except FileNotFoundError:
+            print(f"Error: The file '{filename}' was not found.")
+            sys.exit(1)
+    elif output_mode == "return":
+        return s3contents
 
 if __name__ == "__main__":
     main()

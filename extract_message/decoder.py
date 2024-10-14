@@ -10,8 +10,7 @@ from cryptography.hazmat.primitives import hashes
 from mpmath import mp
 import os
 
-stegoSignature = "Sz12&%OwC;hYRF:CVs3+5"
-stegoEnd = "Eg$r4%jjK/.U8('Pq9!B4"
+from embed_payload.stego_signatures import stegoEnd, stegoSignature
 
 class SignatureNotFoundError(Exception):
     #If the file does not contain our custom signature, we throw an exception
@@ -41,8 +40,6 @@ def load_image(image_path):
             sys.exit(f"An error occurred: {error}.")
 
 def generate_pifile(length, frac, filepath):
-    print(frac)
-
     # Just in case
     try:
         length = int(length)

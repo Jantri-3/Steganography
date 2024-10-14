@@ -5,7 +5,7 @@ Cybersecurity Overview project 2024
 
 
 # How to use 
-First of all please, do $pip install -r requirements.txt   
+To set up the project environment, please run the following command to install the necessary packages: `pip install -r requirements.txt`
 
 ## Creating the payload
 In order to run the payload creation you will need to:  

@@ -217,7 +217,10 @@ def main():
         image = load_image(sys.argv[1])
         try:
             payload = extract_payload(image, method= "LSB")
-            result = decode_payload(payload)
+            try:
+                result = decode_payload(payload)
+            except Exception as error:
+                sys.exit(f"An error occurred: {error}.")
         except SignatureNotFoundError as error:
             sys.exit("Loaded file does not contain any hidden message")
         print("Success! The hidden message is:\n")

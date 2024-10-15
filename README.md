@@ -1,9 +1,19 @@
 # Steganography
-Cybersecurity Overview Project Autumn 2024
+Cybersecurity Overview (DD2391) Project - Autumn 2024  
+KTH Royal Institute of Technology  
 
 # Problem statement
+Traditional data protection using encryption is effective, but it draws attention to the existence of a hidden message. Using an approach like steganography with the Least Significant Bit (LSB) technique in combination with encryption ensures to obscure the content of the message and aswell its existence.
 
-Tbd
+## Challenges
+**Evolving threat landscape:** Nowadays data breaches and unauthorized access to information is common. The number of cyber attacks is constantly increasing, often resulting in high reputational and financial damage. Therefore it is crucial to take security measures to protect confidential information.
+
+**Visibility of encryption:** Encrypion provides an important basis for secure transmission of data. Nevertheless, the presence of encrypted data is often a sign that sensitive information is being transmitted, which motivates an attacker to further analyse and possibly attack this communication.
+
+**Covert communication:** Individual who are involved in activities such as whisteblowing or activism need methods to communicate discreetly. This means that they need techniques not only to encrypt messages, but also to hide that information are being transmitted.
+
+## Solution
+Our solution uses secure public-key encryption to protect the information. Afterwards, the encrypted information gets encoded using Base32 to further obscure the content of the message. By embedding the result in random strings based on the decimals of PI, the message is altered in a pseudo-random manner before being embedded into an image using the LSB technique. Overall, this approach ensures confidentiality and hides the transmission of information using steganography. The additional layers of obfuscation help to protect the encrypted information even if a transmisison of data is noticed.
 
 # How to use 
 To set up the project environment, please run the following command to install the necessary packages:
@@ -235,7 +245,6 @@ Finished: 13/10/2024 (with minor changes such as bug fixes, improved error handl
 - Work on the decoder.py script began on 10/10/2024;
 - The section "decode_payload" was finished by 10/10/2024;
 - The section "extract_payload" was finished by 13/10/2024;
-
 
 # References
 Mandal, P. et al. (2022) 'Digital Image Steganography: A Literature Survey', Information Sciences, 609, pp. 1451-1488. [doi:10.1016/j.ins.2022.07.120](https://doi.org/10.1016/j.ins.2022.07.120).

@@ -1,2 +1,2 @@
-stegoSignature = "Sz12&%OwC;hYRF:CVs3+5"
-stegoEnd = "Eg$r4%jjK/.U8('Pq9!B4"
+stegoSignature = "yb-c;>zZ~)9>Lw(PnL5Tk@ugrp)N{7"
+stegoEnd = "Cvy$+/cZNw-[r[\w\t(TaIcKa^fT;}"

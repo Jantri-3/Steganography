@@ -26,6 +26,7 @@ def split_string(str):
 
 #Step 1 cipher text
 def cipher(plaintext):
+    print(plaintext) # The crash apparently happens here
     ciphertext = bytearray()
     # We open the file where the public key is stored
     with open("public_key.pem", "rb") as f:
@@ -157,7 +158,7 @@ def main():
         # Step 1 Cypher: cypher the contents
         print(contents)
         s1contents = cipher(contents)
-        print("ciao")
+        print(s1contents)
 
         # Step 2 Base32(Linguistics): encode the contents to base 32
         s2contents = base64.b32encode(s1contents)

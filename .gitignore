@@ -10,3 +10,7 @@ testing/
 # Escludere le cartelle __pycache__ (file cache di Python)
 __pycache__/
 *.py[cod]
+
+# Exclude the temporary files
+modified.png
+auxconstant.txt

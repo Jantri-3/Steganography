@@ -11,16 +11,13 @@ First of all please, do $pip install -r requirements.txt
 To resolve the dependencies and build the program you need to do the following steps:
 
 - run
-<code>python -m venv venv</code> 
-This creates a virtual environment, which is a folder in the project that stores a few files and scripts.
+<code>python -m venv venv</code><br>This creates a virtual environment, which is a folder in the project that stores a few files and scripts.
 
 - go to /venv/scripts and run
-<code>activate</code>
-After this command, your shell should include (venv) at the beginning of the prompt.
+<code>activate</code><br> After this command, your shell should include (venv) at the beginning of the prompt.
 
 - from the main folder, run 
-<code>pip install -e .</code>
-This command will install the libraries and resolve the dependencies within the project files.
+<code>pip install -e .</code> (don't forget the . dot!) <br> This command will install the libraries and resolve the dependencies within the project files. It will also create the folder *.egg-info, which contains all the packages required for the project installation.
 
 ## Creating the payload
 In order to run the payload creation you will need to:  
@@ -49,6 +46,8 @@ The usage of analysis.py is:
     -  python3 analysis.py ./ShortPayloadGhostwithFlower.png ./GhostWithFlower_original.png
 
 ## Extracting the payload  
+This is the third step of the process, and it basically serves as the inverse step of payload embedding. In order to retrieve the hidden message from the image, we iterate through the bytes of the pixels of the image, and from there we extract the bits of our message by performing, for each byte, the bitwise AND operation with the bit <code>0b00000001</code>, representing the number 1. This ensures that we ignore all the byte and only carry out the last bit. In order to recognize if the image given to the decoder actually contained a hidden message, we created a string which serves as a signature, and its pretty random nature and sufficient length ensures a very low false positive rate (~10^(-53)). This also ensures for a better "hiding" of the message, as it's difficult to imagine that such a string can be part of a message. 
+
 ## Revealing the plaintext  
 
 # Documentation  
@@ -155,7 +154,7 @@ which serves as a unique launcher for the first part of our program. Outer than 
 had to modify some bits of code of both png_steganography.py and payload.py, as they were concieved
 to be two separate entities, thus making the compatibility not immediate. 
 To run the program, you simply type
-<code>python embed_payload/embed_all_in_one.py image_path plaintext_path [y/n]</code>
+</br></br><code>python embed_payload/embed_all_in_one.py image_path plaintext_path [y/n]</code></br></br>
 and this will produce a png image with the payload correctly embedded
 NOTE: this is currently not working, but I'm working on it. The logic of the program should be correct,
 but for some reason it doesn't find the plaintext.txt file. 

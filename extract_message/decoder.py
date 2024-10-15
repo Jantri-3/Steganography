@@ -19,7 +19,7 @@ class SignatureNotFoundError(Exception):
 
 ### AUXILIARY FUNCTIONS ###
 
-# (Written by n0rdan)
+# (Written by nils)
 # Try to load the image specified in the input argument
 def load_image(image_path):
 
@@ -30,7 +30,7 @@ def load_image(image_path):
     try:
         return iio.v3.imread(image_path)
     except Exception as error:
-        # Handles file errors, same as n0rdan's "handle_errors" function
+        # Handles file errors, same as nils's "handle_errors" function
         if isinstance(error, FileNotFoundError): 
             sys.exit("Image file cannot be found at the specified path. Please provide a valid path.")
         elif isinstance(error, PermissionError):
@@ -128,7 +128,7 @@ def extract_payload(stegoImage, method):
                         embeddedPayload = embeddedPayload[:-stegoEndLength]
                         return binary_to_string(embeddedPayload)
 
-# Takes a payload and decodes it, reversing the steps taken in Payload-Creation (by Jantri) and
+# Takes a payload and decodes it, reversing the steps taken in Payload Creation (by Nils) and
 # returning the decoded original message.
 def decode_payload(payload):
 
@@ -184,7 +184,7 @@ def decode_payload(payload):
     payload = payload.encode('utf-8')
     payload = base64.b32decode(payload)
 
-    ### Step 3: decypher the payload
+    ### Step 3: decypher the payload (by undoing the steps taken to encrypt it in Payload Creation)
     private_key = load_private_key(key_filepath)
 
     chunks = [payload[i:i+256] for i in range(0, len(payload), 256)]

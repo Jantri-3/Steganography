@@ -2,8 +2,9 @@ import sys
 import os
 import imageio as iio
 
-stegoSignature = "Sz12&%OwC;hYRF:CVs3+5"
-stegoEnd = "Eg$r4%jjK/.U8('Pq9!B4"
+# These two strings are necessary for the payload extraction, and they serve no actual purpose in this file
+stego_signature = "yb-c;>zZ~)9>Lw(PnL5Tk@ugrp)N{7"
+stego_end = "Cvy$+5cZNw-[r[!w/t(TaIcKa^fT;}"
 
 # Handle errors occuring while a file is being read or written
 def handle_errors(error):
@@ -30,10 +31,10 @@ def prepare_payload(payload_path):
     # Load the payload from a file
     try:
         with open(payload_path,'r') as f:
-            payload = stegoSignature
+            payload = stego_signature
             reading = f.read()
             payload += reading
-            payload += stegoEnd
+            payload += stego_end
     except Exception as e:
         handle_errors(e)
 
@@ -45,7 +46,6 @@ def prepare_payload(payload_path):
     #
     # Furthermore the format makes sure that every byte has least 8 bits which means that if necessary padding
     # with zeros is applied
-    #
     payload_binary = ''.join(format(byte, '08b') for byte in payload.encode('utf-8'))
 
     return payload_binary

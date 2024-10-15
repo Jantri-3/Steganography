@@ -10,16 +10,16 @@ from cryptography.hazmat.primitives import hashes
 from mpmath import mp
 import os
 
-stegoSignature = "Sz12&%OwC;hYRF:CVs3+5"
-stegoEnd = "Eg$r4%jjK/.U8('Pq9!B4"
+stego_signature = "yb-c;>zZ~)9>Lw(PnL5Tk@ugrp)N{7"
+stego_end = "Cvy$+5cZNw-[r[!w/t(TaIcKa^fT;}"
 
-class SignatureNotFoundError(Exception):
+class Signature_not_found_error:
     #If the file does not contain our custom signature, we throw an exception
     pass
 
 ### AUXILIARY FUNCTIONS ###
 
-# (Written by nils)
+# (Written by Nils)
 # Try to load the image specified in the input argument
 def load_image(image_path):
 
@@ -78,55 +78,55 @@ def generate_pifile(length, frac, filepath):
 ###
 
 ### MAIN FUNCTIONS ###
-def binary_to_string(binaryPayload):
-    allCharacters = [] 
+def binary_to_string(binary_payload):
+    all_characters = [] 
     
-    for i in range(0, len(binaryPayload), 8):
-        byte = binaryPayload[i:i+8] #one byte of the input
-        singleCharacter = chr(int(byte, 2)) #byte to integer to character
-        allCharacters.append(singleCharacter) #insert the character in the buffer
+    for i in range(0, len(binary_payload), 8):
+        byte = binary_payload[i:i+8] #one byte of the input
+        single_character = chr(int(byte, 2)) #byte to integer to character
+        all_characters.append(single_character) #insert the character in the buffer
         
-    return "".join(allCharacters) #convert the buffer to a string
+    return "".join(all_characters) #convert the buffer to a string
 
 # Takes a stegomedium (PNG flag) and a corresponding steganography method (e.g.: LSB) and
 # returns the payload within.
-def extract_payload(stegoImage, method):
-    stegoImageHeight = stegoImage.shape[0]
-    stegoImageWidth = stegoImage.shape[1]
-    stegoImageChannel = stegoImage.shape[2]
+def extract_payload(stego_image, method):
+    stego_image_height = stego_image.shape[0]
+    stego_image_width = stego_image.shape[1]
+    stego_image_channel = stego_image.shape[2]
     
-    readingIndex = 0
-    signatureBinary = ''.join(format(byte, '08b') for byte in stegoSignature.encode('utf-8'))
-    signatureLength = len(signatureBinary)
+    reading_index = 0
+    signature_binary = ''.join(format(byte, '08b') for byte in stego_signature.encode('utf-8'))
+    signature_length = len(signature_binary)
     
-    embeddedPayload = ""
+    embedded_payload = ""
     
-    stegoEndBinary = ''.join(format(byte, '08b') for byte in stegoEnd.encode('utf-8'))
-    stegoEndLength = len(stegoEndBinary)
-    stegoEndBuffer = ""
+    stego_end_binary = ''.join(format(byte, '08b') for byte in stego_end.encode('utf-8'))
+    stego_end_length = len(stego_end_binary)
+    stego_end_buffer = ""
     
-    for i in range(stegoImageHeight):
-        for j in range(stegoImageWidth):
-            for k in range(stegoImageChannel):
-                if readingIndex < signatureLength:
-                    if int(stegoImage[i][j][k] & 1) == int(signatureBinary[readingIndex]):
-                        readingIndex += 1
+    for i in range(stego_image_height):
+        for j in range(stego_image_width):
+            for k in range(stego_image_channel):
+                if reading_index < signature_length:
+                    if int(stego_image[i][j][k] & 1) == int(signature_binary[reading_index]):
+                        reading_index += 1
                     else:
                         #one of the first len(signature) bits does not match the corresponding bit on the signature
-                        raise SignatureNotFoundError
+                        raise Signature_not_found_error
                 else:
-                    lsb = stegoImage[i][j][k] & 1
-                    embeddedPayload += str(lsb)
-                    stegoEndBuffer += str(lsb)
+                    lsb = stego_image[i][j][k] & 1
+                    embedded_payload += str(lsb)
+                    stego_end_buffer += str(lsb)
                     
-                    if len(stegoEndBuffer) > stegoEndLength:
+                    if len(stego_end_buffer) > stego_end_length:
                         #the length of the buffer must match the length of the end signature at all times
-                        stegoEndBuffer = stegoEndBuffer[-stegoEndLength:]
+                        stego_end_buffer = stego_end_buffer[-stego_end_length:]
                         
-                    if stegoEndBuffer == stegoEndBinary:
+                    if stego_end_buffer == stego_end_binary:
                         print("Payload successfully extracted!\nDecoding in progress...\n")
-                        embeddedPayload = embeddedPayload[:-stegoEndLength]
-                        return binary_to_string(embeddedPayload)
+                        embedded_payload = embedded_payload[:-stego_end_length]
+                        return binary_to_string(embedded_payload)
 
 # Takes a payload and decodes it, reversing the steps taken in Payload Creation (by Nils) and
 # returning the decoded original message.
@@ -245,7 +245,7 @@ def main():
                 result = decode_payload(payload)
             except Exception as error:
                 sys.exit(f"An error occurred: {error}.")
-        except SignatureNotFoundError as error:
+        except Signature_not_found_error as error:
             sys.exit("Loaded file does not contain any hidden message")
         print("Success! The hidden message is:\n")
         print(result)

@@ -196,8 +196,11 @@ We could say that the embedded png will change their distribution not more than 
 For replication, we have stored the program to extract this data (analysis_of_images.py) and 3 different images (Original, SP and ELP)  
 
 ## Payload Extraction (Done by Pier Paolo Penna)
+This step involves, given a PNG image as the input, the detection and extraction of an embedded message within the file. The first step before extracting though, is having the program understand whether or not there is a message to be extracted to begin with. In order to achieve this, I thought of creating two strings, namely stegoSignature and stegoKey, made up of random characters. This was both to ensure an almost inexistent chance of false positives, while at the same time not looking suspicious if extracted from a third party, which would just see a bunch of gibberish letters. I added these two strings to the payload embedding part, as the beginning and the end of the embedded message. <br>Once the message is encoded in the image, the extraction follows three steps:
 
-TBD
+1. Determine if the image given in input contains the stegoSignature as the beginning of the message. This ensures that we only extract messages from images that do contain them.
+2. If the image is a stego medium, we proceed with the payload extraction. This operation is performed by using the bitwise and operator, confronting the bytes of the image with the byte <code>00000001</code>, which results in extracting the last bit of the byte passed in the input, thus revealing the embedded message.
+3. The last step was looking for the stegoEnd in order to stop the payload extraction. This operation was performed using a string buffer that contained the last extracted bits for the size of the stegoEnd. At every step we would confront the stegoEnd and the current buffer, interrupting execution once they match. Again, the randomness and length of the stegoEnd string ensures a negligible false positive rate.
 
 ## Payload Decoding (Done by Miguel Coelho)
 Just as payload extraction is the inverse of payload embedding, payload decoding is the inverse of payload creation: to accomplish this task, the script will walk back through the steps taken in payload creation in reverse. Starting with a payload string delivered by the previous stage of the script, the steps to take are as follows:

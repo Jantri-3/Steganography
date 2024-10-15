@@ -1,6 +1,11 @@
 # Steganography
 Cybersecurity Overview (DD2391) Project - Autumn 2024  
 KTH Royal Institute of Technology  
+**Team:**
+- Juan Trilo Carreras
+- Nils Eric Jordan
+- Miguel Coelho
+- Juan Trillo Carreras
 
 # Problem statement
 Traditional data protection using encryption is effective, but it draws attention to the existence of a hidden message. Using an approach like steganography with the Least Significant Bit (LSB) technique in combination with encryption ensures to obscure the content of the message and aswell its existence.

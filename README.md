@@ -41,14 +41,18 @@ The usage of analysis.py is:
     -  `python3 analysis.py ./EvenLongerPayloadGhostwithFlower.png ./GhostWithFlower_original.png`
     -  `python3 analysis.py ./ShortPayloadGhostwithFlower.png ./GhostWithFlower_original.png`
 
-## Retrieving the plaintext (or, the reverse process)
+## Retrieving the message (or, doing the reverse process)
 To reverse the process described above (creating a payload and embedding it into an image), execute the following commands:
    - `python3 decoder.py /path/to/embedded_image.png`
+
+Make sure to include the necessary private key (for decryption purposes) in the private_key.pem file, located in the extract_message folder.
 
 Please note that this process will only work if:
    - the filename in question corresponds to a .png file;
    - the referred file can be open and read;
    - there is a valid payload embedded in the refered file;
+   - there is a suitable private key in the private_key.pem file;
+   - the provided private key matches the public key used to initially encrypt the payload in question;
 
 # Documentation 
 Here is the documentation of the project together with a short description of what every team member has done for the project.  

@@ -190,11 +190,15 @@ def decode_payload(payload):
     chunks = [payload[i:i+256] for i in range(0, len(payload), 256)]
 
     decrypted = bytearray()
-    for chunk in chunks:
-        decrypted += private_key.decrypt(
-            chunk, 
-            padding.OAEP(mgf=padding.MGF1(algorithm=hashes.SHA256()),algorithm=hashes.SHA256(),label=None)
-        )
+    try:
+        for chunk in chunks:
+            decrypted += private_key.decrypt(
+                chunk, 
+                padding.OAEP(mgf=padding.MGF1(algorithm=hashes.SHA256()),algorithm=hashes.SHA256(),label=None)
+            )
+    except Exception as error:
+        sys.exit(f"An error occurred while attempting to decrypt the payload (is the provided private key right for this payload?): {error}.")
+
     
     result = decrypted.decode()
 

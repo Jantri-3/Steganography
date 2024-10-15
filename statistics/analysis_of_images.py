@@ -1,7 +1,5 @@
 import sys
-import imageio as iio
 from PIL import Image
-
 
 def count_lsb(image_path):
     # we first open the image
@@ -31,7 +29,6 @@ def count_lsb(image_path):
     
     return count_0, count_1
 
-
 def main():
     # Check if the correct usage of the program is performed
     if len(sys.argv) < 2:
@@ -45,9 +42,9 @@ def main():
     count_0, count_1 = count_lsb(image_path)#get the counts of 0's and 1's
     total = count_0 + count_1
     print("Original image ---------------------------------------------")
-    print(f"Original number of 0's= {count_0}")
-    print(f"Original number of 1's= {count_1}")
-    print(f"Total number of 0's+1's befroe processing: {total}")
+    print(f"Original number of 0's = {count_0}")
+    print(f"Original number of 1's = {count_1}")
+    print(f"Total number of 0's + 1's befroe processing: {total}")
     print(f"Percentage of 0's {(count_0/total) * 100}%")
     print(f"Percentage of 1's {(count_1/total) * 100}%")
 
@@ -55,16 +52,13 @@ def main():
     proc_count_0, proc_count_1 = count_lsb(image_path)
     proc_total = proc_count_0 + proc_count_1
     print("Processed image ---------------------------------------------")
-    print(f"Processed number of 0's= {proc_count_0}")
-    print(f"Processed number of 1's= {proc_count_1}")
-    print(f"Total number of 0's+1's after processing: {proc_total}")
+    print(f"Processed number of 0's = {proc_count_0}")
+    print(f"Processed number of 1's = {proc_count_1}")
+    print(f"Total number of 0's + 1's after processing: {proc_total}")
     print(f"Percentage of 0's {(proc_count_0/proc_total) * 100}%")
     print(f"Percentage of 1's {(proc_count_1/proc_total) * 100}%")
 
     print("---------------------------------------------")
-
-
-
 
 if __name__ == "__main__":
     main()

@@ -1,4 +1,5 @@
 import sys
+import os
 import imageio as iio
 from stego_signatures import stegoEnd, stegoSignature
 
@@ -8,7 +9,7 @@ def handle_errors(error):
     if isinstance(error,FileNotFoundError): 
         sys.exit("File cannot be found at the specified path. Please provide a valid path.")
     elif isinstance(error,PermissionError):
-        sys.exit("Insufficient permissions to read the specified file. Check your permissions.")
+        sys.exit("Insufficient permissions to read/write. Check your permissions.")
     elif isinstance(error,IsADirectoryError):
         sys.exit("Expected a file, but found a directory. Please provide a valid path to a file.")
     else:
@@ -56,18 +57,25 @@ def least_significant_bit(stego_medium, payload_binary):
     stego_medium_height = stego_medium.shape[0]
     stego_medium_width = stego_medium.shape[1]
     stego_medium_channel = stego_medium.shape[2]
+    
+    #Store possible amount of bits to embed
+    bits_max = stego_medium_height * stego_medium_width * stego_medium_channel
 
     payload_index = 0 # Index to access bit of paylaod
     payload_length = len(payload_binary) # Store boundary of payload
 
-    # Manipulate the LSB at every channel (R,G,B) at every pixel
+    #Check if the payload fits into the image
+    if (payload_length > bits_max):
+        sys.exit("The payload is too large to be embedded into the picture.")
+
+    # Manipulate the LSB at every channel at every pixel
     for i in range(stego_medium_height):
         for j in range(stego_medium_width):
             for k in range(stego_medium_channel):
                 if payload_index < payload_length: # Manipulate as long as there are bits of the payload left
 
                     current_channel = stego_medium[i][j][k] # Store value of the current channel
-
+                       
                     if payload_binary[payload_index] == '1': # Change LSB to 1 by bitwise or, when payload is 1
                         stego_medium[i][j][k] |= 1
                     else: # Change/Clear LSB to 0 by bitwise and, when payload is 0
@@ -75,9 +83,13 @@ def least_significant_bit(stego_medium, payload_binary):
 
                     payload_index += 1 # Increment payload index to go to next bit of the payload
 
-                else: # When whole payload was embedded into the image save the new image
-                    iio.v3.imwrite('modified.png',stego_medium)
-                    return "Payload embedded into picture!"
+                else: # When the whole payload is embedded into the image save the new image
+                    save_path = os.path.join(os.getcwd(),"modified.png")
+                    try:
+                        iio.v3.imwrite(save_path,stego_medium)
+                    except Exception as e:
+                        handle_errors(e)
+                    return f"Payload embedded into the picture!\nThe new picture can be found at {save_path}"
 
 def check_files(files):
 

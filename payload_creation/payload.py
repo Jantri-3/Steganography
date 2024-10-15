@@ -71,18 +71,15 @@ def picover(contents):
         if Use_time:
             with open("timepi_decimals.txt", "r") as f:
                 pipositions = f.read(length+2)[2:]#read the length needed skipping the "3." in order to only have the decimals of pi
-                os.remove("timepi_decimals.txt")
-                
         else:
             pi_decimals.n_of_pi_decimals(length)
             with open("npi_decimals.txt", "r") as f:
                 pipositions = f.read(length+2)[2:]#read the length needed skipping the "3." in order to only have the decimals of pi
-                os.remove("npi_decimals.txt")
+                
     else:
         if Use_time:
             with open("timepi_decimals.txt", "r") as f:
                 pipositions = f.read(length+2)[2:]#read the length needed skipping the "3." in order to only have the decimals of pi
-                os.remove("timepi_decimals.txt")
         else:
             with open("pi_decimals.txt", "r") as f:
                 pipositions = f.read(length+2)[2:]
@@ -167,6 +164,14 @@ def main():
         print(f"Error: The file '{filename}' was not found.")
         sys.exit(1)
     
+    #Delete temp files
+    if os.path.isfile("timepi_decimals.txt"):
+        os.remove("timepi_decimals.txt")
+
+    if os.path.isfile("npi_decimals.txt"):
+        os.remove("npi_decimals.txt")
+
+
     #Finalstep
     if output_mode == "write":
         try:

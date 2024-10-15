@@ -1,8 +1,0 @@
-Error depending on .png or .txt file missing
-Faster when comparision if payload and current channel are 1 and then do nothing??
-Implement check if payload fits into picture
-Somehow embedd length of payload to be able to extract payload
---> Hide in metadata under disclaimer
-Embedd time in metadata as well
-- Use 0 - 24 time when it is real
-- If it contains am or pm it is fake

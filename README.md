@@ -1,11 +1,14 @@
 # Steganography
-Cybersecurity Overview project 2024
+Cybersecurity Overview Project Autumn 2024
 
 # Problem statement
 
+Tbd
 
 # How to use 
-To set up the project environment, please run the following command to install the necessary packages: `pip install -r requirements.txt`
+To set up the project environment, please run the following command to install the necessary packages:
+
+`pip install -r requirements.txt`
 
 ## Creating the payload
 In order to run the payload creation you will need to:  
@@ -15,28 +18,33 @@ In order to run the payload creation you will need to:
 
 The usage of payload.py is:    
 - For the normal use:  
-    - python3 payload.py plaintext.txt  
+    - `python3 payload.py plaintext.txt`  
 - For the use including the time (include step4):  
-    - python3 payload.py plaintext.txt y  
+    - `python3 payload.py plaintext.txt y`
 
 The result will be stored in payload.txt  
 
-## Payload embedding  
+## Embedding the payload
+To embed a created payload into a picture you have to pass a payload as a .txt file and a .png image shown as follows:
+
+`python3 png_steganography.py /path/to/payload /path/to/image`
+
+The picture with the embedded payload will be stored in the current working directory.
 
 ## Statistics  
 In order to run the anylisis.py we need to specify 2 image files.  
 Ideally an image altered with the steganography used in the project and the original file without any kind of payload embedded.  
 The usage of analysis.py is:  
 - General usage  
-    - python3 analysis.py path/of/processedImage /path/of/original/image
+    - `python3 analysis.py path/of/processedImage /path/of/original/image`
 - To replicate the data shown in the documentation  
-    -  python3 analysis.py ./EvenLongerPayloadGhostwithFlower.png ./GhostWithFlower_original.png
-    -  python3 analysis.py ./ShortPayloadGhostwithFlower.png ./GhostWithFlower_original.png
+    -  `python3 analysis.py ./EvenLongerPayloadGhostwithFlower.png ./GhostWithFlower_original.png`
+    -  `python3 analysis.py ./ShortPayloadGhostwithFlower.png ./GhostWithFlower_original.png`
 
 ## Extracting the payload  
 ## Revealing the plaintext  
 
-# Documentation  
+# Documentation 
 Here is the documentation of the project together with a short description of what every team member has done for the project.  
 
 We have divided the work by phases, Juan Trillo Carreras has been in charge of leading the project as well as creating the scripts of the payload creation and latter analysis of the results. However ,the ideas behind the payload creation were actually a group effort as a "brainstorming" process has been taken into consideration to have more than one steganography techinque.  
@@ -81,11 +89,43 @@ s.t instead of the numbers used = 3.1415... is just 3.1415... * fraction_of_the_
 
 If this option is ativated (using 'y') it will leave one line in the payload.txt with the current time of the execution to hide it in the metadata  
 
+## Payload Embedding (Done by Nils Jordan)
+To embed a created payload into an .png image the Least-Significant-Bit (LSB) technique is used. The program sequence is as follows:
 
-## Embedding paylaods into images
+1. Processing the input of the user
+   - Checking for the appropiate amount of arguments
+   - Checking for the appropiate file types
+   - Checking for the appropiate order of arguments
+2. Loading the provided image from the provided path
+3. Loading the provided payload from the provided path
+4. Embedding the payload into the image using the LSB technique
+   - Checking if the payload fits into the image before embedding
+5. Saving the modified image to the current working directory
 
+### Least-Significant-Bit (LSB) technique
+When LSB is used the embedding process consists of changing the least significant bits of pixels. This means that a pixel only changes very slightly in its color, but this change cannot be recognized by the human eye when a original image and a modified image is compared (Mandal, P. et al., 2022). An example illustrates the process:
 
-### Quick analysis of the modifications made to the images: (Done by Juan Trillo)
+**Original pixel:** `RGB = (10101100, 11010110, 01101101)` **Payload:** `01000001`
+
+As described LSB changes the least significant bits of a pixel.
+
+**Red:** `10101100` → `10101100` | No changes
+
+**Green:** `11010110` → `11010111` | The last bit was changed from 0 to 1 
+
+**Blue:** `01101101` → `01101100` | The last bit was changed from 1 to 0 
+
+The result of applying LSB is a slightly modified pixel.
+
+**Modified pixel:** `RGB = (10101100, 11010111, 01101100)`
+
+LSB has the advantages that the it does not require a lot of computation power and that it can be integrated into other methods. Unfortunately LSB decreases the image quality and statistical analysis is a powerful technique to discover the application of the LSB technique. Nowadays LSB is focussed on embedding capacity rather than security, but several modifications of the LSB technique exist. There are also correction methods which can be used to improve the image quality when the LSB technique is applied (Mandal, P. et al., 2022).
+
+### References
+
+Mandal, P. et al. (2022) 'Digital Image Steganography: A Literature Survey', Information Sciences, 609, pp. 1451-1488. [doi:10.1016/j.ins.2022.07.120](https://doi.org/10.1016/j.ins.2022.07.120).
+
+### Quick analysis of the modifications made to the images (Done by Juan Trillo)
 For checking how the image behaves depending on the payload embedded, we have modified the same image embedding it with 3 different  payloads a short one of 2000 characters and a longer one with 8.240 characters  and the even longer with 32.800 chars.  
 We have first checked the original png LSB 0’s and 1’s  
 
@@ -146,15 +186,15 @@ Topics of research:
 - Python libraries for pngs
 
 For the research phase we collected sources of information, made notes and summarized some articles and papers.   
+
 ### Phase 2: Crafting a payload
 Finished 03/10/2024 (with some changes performed after that date -bug fixes, comments, and general improvements-)  
 
 After the group made a brainstorming process of what steps should be taken to create the payload, Juan chose the different steps that should be carried out to craft the payload and created a script following said steps.  
 
 ### Phase 3: Embdeding of the payload to a .png
-Finished 06/10/2024  
+Finished 06/10/2024
+- Bug fixes, comments and improvements performed after that date
 
 ### Phase 4: Exctracting and revealing the plaintext from the .png
 Finished: 13/10/2024
-
-

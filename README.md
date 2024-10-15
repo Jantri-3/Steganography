@@ -65,7 +65,19 @@ Although only one step is actually procuring that the plaintext is actually secu
 we use 3 different linguistic steganography techniques to hide that there even is a message (altogether of the latter technique of embedding this payload onto a .png file)
 
 ### Step 1: Cypher
-We first cypher the contents of plaintext.txt
+We first cypher the contents of plaintext.txt using RSA
+
+<code>ciphertext = public_key.encrypt(contents.encode(),padding.OAEP(mgf=padding.MGF1(algorithm=hashes.SHA256()),algorithm=hashes.SHA256(),label=None))</code>
+
+We are using Optical Assymetric Encryption Padding (Padding scheme to assure randomness -this padding is not deterministic-)  
+`mgf=padding.MGF1(algorithm=hashes.SHA256())`  
+MGF1 (Mask Generation Function 1):   
+Is a cryptographic function used in conjunction with OAEP which will generates a mask (sequence of bytes used to randomize the encryption)  
+`hashes.SHA256(): `
+This means that we are using SHA256 in the MGF
+`algorithm=hashes.SHA256()`
+We are ensuring SHA256 is the main hashing function used in the OAEP
+
 
 ### Step 2: Base32 (Linguistics)
 We encode the ciphered text to base 32

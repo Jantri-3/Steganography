@@ -25,20 +25,40 @@ def load_image(image_path):
 
     # Checks whether the specified path corresponds to a png or not: if not, abort.
     if not image_path.endswith(".png"):
-        sys.exit("Specified file is not a png. Please provide a valid path to a png file.")
+        sys.exit("Specified file is not a png file. Please provide a valid path to a png file.")
 
     try:
         return iio.v3.imread(image_path)
     except Exception as error:
         # Handles file errors, same as n0rdan's "handle_errors" function
         if isinstance(error, FileNotFoundError): 
-            sys.exit("File cannot be found at the specified path. Please provide a valid path.")
+            sys.exit("Image file cannot be found at the specified path. Please provide a valid path.")
         elif isinstance(error, PermissionError):
-            sys.exit("Insufficient permissions to read the specified file. Check your permissions.")
+            sys.exit("Insufficient permissions to read the specified image file. Check your permissions.")
         elif isinstance(error, IsADirectoryError):
-            sys.exit("Expected a file, but found a directory. Please provide a valid path to a file.")
+            sys.exit("Expected a file, but found a directory. Please provide a valid path to an image file.")
         else:
-            sys.exit(f"An error occurred: {error}.")
+            sys.exit(f"An error occurred while attempting to load the image file: {error}.")
+
+def load_private_key(key_path):
+
+    if not key_path.endswith(".pem"):
+        sys.exit("Specified file is not a pem file. Please provide a valid path to a pem file.")
+
+    try:
+        with open(key_path, "rb") as f:
+            private_key = serialization.load_pem_private_key(f.read(), password = None)
+    except Exception as error:
+        if isinstance(error, FileNotFoundError): 
+            sys.exit("Key file cannot be found at the specified path. Please provide a valid path.")
+        elif isinstance(error, PermissionError):
+            sys.exit("Insufficient permissions to read the specified key file. Check your permissions.")
+        elif isinstance(error, IsADirectoryError):
+            sys.exit("Expected a file, but found a directory. Please provide a valid path to a key file.")
+        else:
+            sys.exit(f"An error occurred while attempting to load the key file: {error}.")
+
+    return private_key
 
 def generate_pifile(length, frac, filepath):
     print(frac)
@@ -114,6 +134,7 @@ def decode_payload(payload):
 
     ### Step 1: extract the actual payload from the input (method will depend on whether time-based encoding is used)
     aux_filepath = "auxconstant.txt"
+    key_filepath = "private_key.pem"
     
     if payload[:4] == "TIME":
         _, timestr, payload = payload.split(" ")
@@ -164,8 +185,7 @@ def decode_payload(payload):
     payload = base64.b32decode(payload)
 
     ### Step 3: decypher the payload
-    with open("private_key.pem", "rb") as f:
-        private_key = serialization.load_pem_private_key(f.read(), password = None)
+    private_key = load_private_key(key_filepath)
 
     chunks = [payload[i:i+256] for i in range(0, len(payload), 256)]
 

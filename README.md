@@ -32,14 +32,14 @@ To embed a created payload into a picture you have to pass a payload as a .txt f
 The picture with the embedded payload will be stored in the current working directory.
 
 ## Statistics  
-In order to run the analysis.py we need to specify 2 image files.  
+In order to run the analysis_of_images.py we need to specify 2 image files.  
 Ideally an image altered with the steganography used in the project and the original file without any kind of payload embedded.  
-The usage of analysis.py is:  
+The usage of analysis_of_images.py is:  
 - General usage  
-    - `python3 analysis.py path/of/processedImage /path/of/original/image`
+    - `python3 analysis_of_images.py path/of/processedImage /path/of/original/image`
 - To replicate the data shown in the documentation  
-    -  `python3 analysis.py ./EvenLongerPayloadGhostwithFlower.png ./GhostWithFlower_original.png`
-    -  `python3 analysis.py ./ShortPayloadGhostwithFlower.png ./GhostWithFlower_original.png`
+    -  `python3 analysis_of_images.py ./EvenLongerPayloadGhostwithFlower.png ./GhostWithFlower_original.png`
+    -  `python3 analysis_of_images.py ./ShortPayloadGhostwithFlower.png ./GhostWithFlower_original.png`
 
 ## Retrieving the message (or, doing the reverse process)
 To reverse the process described above (creating a payload and embedding it into an image), execute the following commands:
@@ -131,29 +131,6 @@ The result of applying LSB is a slightly modified pixel.
 
 LSB has the advantages that the it does not require a lot of computation power and that it can be integrated into other methods. Unfortunately LSB decreases the image quality and statistical analysis is a powerful technique to discover the application of the LSB technique. Nowadays LSB is focussed on embedding capacity rather than security, but several modifications of the LSB technique exist. There are also correction methods which can be used to improve the image quality when the LSB technique is applied (Mandal, P. et al., 2022).
 
-## Payload Extraction (Done by Pier Paolo Penna)
-
-TBD
-
-## Payload Decoding (Done by Miguel Coelho)
-Just as payload extraction is the inverse of payload embedding, payload decoding is the inverse of payload creation: to accomplish this task, the script will walk back through the steps taken in payload creation in reverse. Starting with a payload string delivered by the previous stage of the script, the steps to take are as follows:
-
-1. Determine whether time-based encoding was used (or, in other words, whether the constant used to cloak the payload in random characters is pi or not);
-   - With the current setup, this is determined by simply looking at the start of the payload. If time-based encoding is used, the payload will include a "timestring" (e.g.: TIME 19:09:14) in the very beginning; if not, no such string will be found.
-2. Retrieve the characters belonging to the actual payload (or, discarding the junk characters used for obfuscation);
-   - As described in "Payload Creation", this obfuscation technique depends on an auxiliary constant (c), which is calculated as follows:
-      - If time-based encoding is used, c = (timestring_as_seconds/24*3600) * pi
-      - Otherwise, c = pi
-   - The decimal digits of this constant are then interpreted as the indexes of the characters pertaining to the actual payload in the provided payload string (e.g.: if the first decimal digit of our constant is 2, then the first character of the actual payload resides at input_string[2]).
-   - Knowing that the input_string can be cleanly divided into 10 character long chunks, with each chunk containing exactly one character of the actual payload, we can systematically extract all the right characters, one chunk at a time.
-3. Reverse the base32 encoding step (Step 2 of Payload Creation);
-4. Reverse the encryption technique used to cypher the initial plaintext into ciphertext (Step 1 of Payload Creation) using a user-provided matching private key (found in "./private_key.pem") in PEM format.
-
-
-### References
-
-Mandal, P. et al. (2022) 'Digital Image Steganography: A Literature Survey', Information Sciences, 609, pp. 1451-1488. [doi:10.1016/j.ins.2022.07.120](https://doi.org/10.1016/j.ins.2022.07.120).
-
 ### Quick analysis of the modifications made to the images (Done by Juan Trillo)
 For checking how the image behaves depending on the payload embedded, we have modified the same image embedding it with 3 different  payloads a short one of 2000 characters and a longer one with 8.240 characters  and the even longer with 32.800 chars.  
 We have first checked the original png LSB 0’s and 1’s  
@@ -194,10 +171,25 @@ form 43 to 45.2 and from 56.9 to 54.8
   
 We could say that the embedded png will change their distribution not more than a 3% even in extreme cases (as a non existent payload will result in no change at all in the distribution)  
   
-For replication, we have stored the program to extract this data (analysis.py) and 3 different images (Original, SP and ELP)  
-statistics
-extract payload
-reveal plaintext
+For replication, we have stored the program to extract this data (analysis_of_images.py) and 3 different images (Original, SP and ELP)  
+
+## Payload Extraction (Done by Pier Paolo Penna)
+
+TBD
+
+## Payload Decoding (Done by Miguel Coelho)
+Just as payload extraction is the inverse of payload embedding, payload decoding is the inverse of payload creation: to accomplish this task, the script will walk back through the steps taken in payload creation in reverse. Starting with a payload string delivered by the previous stage of the script, the steps to take are as follows:
+
+1. Determine whether time-based encoding was used (or, in other words, whether the constant used to cloak the payload in random characters is pi or not);
+   - With the current setup, this is determined by simply looking at the start of the payload. If time-based encoding is used, the payload will include a "timestring" (e.g.: TIME 19:09:14) in the very beginning; if not, no such string will be found.
+2. Retrieve the characters belonging to the actual payload (or, discarding the junk characters used for obfuscation);
+   - As described in "Payload Creation", this obfuscation technique depends on an auxiliary constant (c), which is calculated as follows:
+      - If time-based encoding is used, c = (timestring_as_seconds/24*3600) * pi
+      - Otherwise, c = pi
+   - The decimal digits of this constant are then interpreted as the indexes of the characters pertaining to the actual payload in the provided payload string (e.g.: if the first decimal digit of our constant is 2, then the first character of the actual payload resides at input_string[2]).
+   - Knowing that the input_string can be cleanly divided into 10 character long chunks, with each chunk containing exactly one character of the actual payload, we can systematically extract all the right characters, one chunk at a time.
+3. Reverse the base32 encoding step (Step 2 of Payload Creation);
+4. Reverse the encryption technique used to cypher the initial plaintext into ciphertext (Step 1 of Payload Creation) using a user-provided matching private key (found in "./private_key.pem") in PEM format.
 
 
 ## Room improvement (Pier)
@@ -231,3 +223,7 @@ Finished: 13/10/2024 (with minor changes such as bug fixes, improved error handl
 - Work on the decoder.py script began on 10/10/2024;
 - The section "decode_payload" was finished by 10/10/2024;
 - The section "extract_payload" was finished by 13/10/2024;
+
+
+# References
+Mandal, P. et al. (2022) 'Digital Image Steganography: A Literature Survey', Information Sciences, 609, pp. 1451-1488. [doi:10.1016/j.ins.2022.07.120](https://doi.org/10.1016/j.ins.2022.07.120).

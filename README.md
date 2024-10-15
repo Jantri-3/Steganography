@@ -217,14 +217,17 @@ Topics of research:
 For the research phase we collected sources of information, made notes and summarized some articles and papers.   
 
 ### Phase 2: Crafting a payload
-Finished 03/10/2024 (with some changes performed after that date -bug fixes, comments, and general improvements-)  
+Finished: 03/10/2024 (with some changes performed after that date -bug fixes, comments, and general improvements-)  
 
 After the group made a brainstorming process of what steps should be taken to create the payload, Juan chose the different steps that should be carried out to craft the payload and created a script following said steps.  
 
 ### Phase 3: Embdeding of the payload to a .png
-Finished 06/10/2024
+Finished: 06/10/2024
 - Bug fixes, comments and improvements performed after that date
 
-### Phase 4: Exctracting and revealing the plaintext from the .png
-Finished: 13/10/2024
-- 
+### Phase 4: Extracting the payload from the .png and revealing the original message
+Finished: 13/10/2024 (with minor changes such as bug fixes, improved error handling, etc... made afterwards)
+
+- Work on the decoder.py script began on 10/10/2024;
+- The section "decode_payload" was finished by 10/10/2024;
+- The section "extract_payload" was finished by 13/10/2024;

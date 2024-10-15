@@ -8,7 +8,7 @@ from cryptography.hazmat.primitives import hashes
 import base64
 from datetime import datetime
 
-from payload_creation import pi_decimals
+import pi_decimals
 
 #For step3 random chars
 import random
@@ -25,14 +25,15 @@ def split_string(str):
     return [str[i:i+190] for i in range(0, len(str), 190)]
 
 #Step 1 cipher text
-def cipher(contents):
+def cipher(plaintext):
     ciphertext = bytearray()
     # We open the file where the public key is stored
     with open("public_key.pem", "rb") as f:
+        print("opened")
         public_key = serialization.load_pem_public_key(f.read())# Store the key
 
     
-    chunks = split_string(contents)
+    chunks = split_string(plaintext)
 
     for c in chunks:
        ciphertext += public_key.encrypt(c.encode(),# encode into bytes
@@ -126,6 +127,8 @@ def fraction_of_day(filename):
     return frac_of_day
 
 
+
+
 def main():
     # check if correct usage is followed
     if len(sys.argv) < 2:
@@ -136,6 +139,9 @@ def main():
 
     # get the filename from the command-line argument
     filename = sys.argv[1]
+    #filename = handle_filename(filename)
+    
+
 
     # check if we are using tht time of the execution
     if len(sys.argv) >= 3:
@@ -149,7 +155,9 @@ def main():
             contents = input_file.read()
     
         # Step 1 Cypher: cypher the contents
+        print(contents)
         s1contents = cipher(contents)
+        print("ciao")
 
         # Step 2 Base32(Linguistics): encode the contents to base 32
         s2contents = base64.b32encode(s1contents)
@@ -159,6 +167,7 @@ def main():
         #& Step 4 TimeFraction: use a fraction of pi depending on the date time of the execution to hide it even better 
         #If this option is ativated (using 'y') it will leave one line with the current time of the execution
         s3contents = picover(s2contents)
+        print(s3contents)
 
     except FileNotFoundError:
         print(f"Error: The file '{filename}' was not found.")

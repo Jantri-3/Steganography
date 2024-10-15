@@ -209,14 +209,9 @@ Just as payload extraction is the inverse of payload embedding, payload decoding
 
 
 ## Room improvement (Pier)
-This section describes the steps I took for improving the program in a UX sense. 
-Generally, a user would rather input the plaintext and the image in which to hide the message,
-rather than manually crafting the encrypted payload and subsequently insert it into the image.
-With this in mind, I created the file embed_all_in_one.py (in the folder embed_payload), 
-which serves as a unique launcher for the first part of our program. Outer than this, I also
-had to modify some bits of code of both png_steganography.py and payload.py, as they were concieved
-to be two separate entities, thus making the compatibility not immediate. 
-To run the program, you simply type
+This section describes the steps taken for improving the program in a UX sense. 
+Generally, a user would input the plaintext and the image in which to hide the message, rather than manually crafting the encrypted payload and subsequently insert it into the image. With this in mind, the file embed_all_in_one.py (in the folder embed_payload) serves this exact purpose, being a unique launcher for the first half of our program. In order to achieve this, outer than the previously mentioned file, it was also necessary to modify some bits of code of both png_steganography.py and payload.py, as they were concieved as two separate entities, thus making the compatibility not immediate. 
+<br>To run the program, you simply type
 </br></br><code>python embed_payload/embed_all_in_one.py image_path plaintext_path [y/n]</code></br></br>
 and this will produce a png image with the payload correctly embedded
 NOTE: this is currently not working, but I'm working on it. The logic of the program should be correct,

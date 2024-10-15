@@ -1,5 +1,5 @@
 import png_steganography
-from payload_creation import payload
+import payload
 import sys
 import imageio
 
@@ -30,7 +30,9 @@ def main():
     
     sys.argv.remove(image_filename)
     sys.argv[0] = "payload.py"
+    sys.argv[1] = sys.argv[1]
     payload.output_mode = "return"
+    #print(sys.argv)
     payload_encrypted = payload.main()
     payload_binary = png_steganography.prepare_payload(payload_encrypted)
     print(png_steganography.least_significant_bit(image, payload_binary))

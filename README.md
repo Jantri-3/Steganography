@@ -218,7 +218,11 @@ Just as payload extraction is the inverse of payload embedding, payload decoding
 
 
 ## Room improvement (Pier)
-...
+This section describes the steps taken for improving the program in a UX sense.
+Disclaimer: unfortunately, this part of the project didn't seem to work properly, as there were some errors in locating the plaintext file from its path. You'll read this issue in more detail in the branch where this improvement is written, as we couldn't merge the two projects.
+<br>The general idea is that a user would input the plaintext and the image in which to hide the message, rather than manually crafting the encrypted payload and subsequently insert it into the image. With this in mind, we created a file named embed_all_in_one.py that serves this exact purpose, being a unique launcher for the first half of our program, invoking the functions for both the payload creation and its embedding.
+<br>One other thing that I added was a stego_signatures file, that contains two strings that we used as identifiers to mark the beginning and the end of the encrypted message, as they were necessary for payload extraction.
+You will find more details of the whole process in the README.md file of the other branch, including instructions on how to build the project with another method.
 
 # Phases of the project
 

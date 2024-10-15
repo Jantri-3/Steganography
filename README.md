@@ -7,8 +7,23 @@ Tbd
 
 # How to use 
 To set up the project environment, please run the following command to install the necessary packages:
+<code>pip install -r requirements.txt </code> 
 
-`pip install -r requirements.txt`
+# How to build
+To resolve the dependencies and build the program you need to do the following steps:
+
+- run
+<code>python3 -m venv venv</code> 
+This creates a virtual environment, which is a folder in the project that stores a few files and scripts.
+
+- go to /venv/scripts and run
+<code>activate</code>
+After this command, your shell should include (venv) at the beginning of the prompt.
+
+- from the main folder, run 
+<code>pip install -e .</code>
+This command will install the libraries and resolve the dependencies within the project files.
+
 
 ## Creating the payload
 In order to run the payload creation you will need to:  
@@ -193,7 +208,23 @@ Just as payload extraction is the inverse of payload embedding, payload decoding
 
 
 ## Room improvement (Pier)
-...
+This section describes the steps I took for improving the program in a UX sense. 
+Generally, a user would rather input the plaintext and the image in which to hide the message,
+rather than manually crafting the encrypted payload and subsequently insert it into the image.
+With this in mind, I created the file embed_all_in_one.py (in the folder embed_payload), 
+which serves as a unique launcher for the first part of our program. Outer than this, I also
+had to modify some bits of code of both png_steganography.py and payload.py, as they were concieved
+to be two separate entities, thus making the compatibility not immediate. 
+To run the program, you simply type
+<code>python embed_payload/embed_all_in_one.py image_path plaintext_path [y/n]</code>
+and this will produce a png image with the payload correctly embedded
+NOTE: this is currently not working, but I'm working on it. The logic of the program should be correct,
+but for some reason it doesn't find the plaintext.txt file. 
+
+One other thing that I added was a stego_signatures file in the embed_payload folder, that contains
+two strings that we used as identifiers to mark the beginning and the end of the encrypted message,
+as they were necessary for payload extraction.
+
 
 # Phases of the project
 

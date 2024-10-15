@@ -1,9 +1,7 @@
 import sys
 import os
 import imageio as iio
-
-stegoSignature = "Sz12&%OwC;hYRF:CVs3+5"
-stegoEnd = "Eg$r4%jjK/.U8('Pq9!B4"
+from stego_signatures import stegoEnd, stegoSignature
 
 # Handle errors occuring while a file is being read or written
 def handle_errors(error):
@@ -17,6 +15,7 @@ def handle_errors(error):
     else:
         sys.exit(f"An error occurred: {error}.")
 
+
 # Load the user's image
 def load_image(image_path):
 
@@ -25,18 +24,20 @@ def load_image(image_path):
     except Exception as e:
         handle_errors(e)
 
-def prepare_payload(payload_path):
 
-    # Load the payload from a file
+def load_payload(payload_path):
     try:
-        with open(payload_path,'r') as f:
-            payload = stegoSignature
+        with open(payload_path,"r") as f:
             reading = f.read()
-            payload += reading
-            payload += stegoEnd
     except Exception as e:
         handle_errors(e)
+    return prepare_payload(reading)
 
+
+def prepare_payload(payload_string):
+    payload = stegoSignature 
+    payload += payload_string
+    payload += stegoEnd
     # Convert the payload to binary
     #
     # The payload gets converted to a bytes object by using UTF-8 encoding.An ASCII character 'a' is represented as a
@@ -129,11 +130,11 @@ def main():
     else: 
         if check_files([sys.argv[1],sys.argv[2]]) == 0: # When user first inserts picture and then payload
             stego_image = load_image(sys.argv[1])
-            prepared_payload = prepare_payload(sys.argv[2])
+            prepared_payload = load_payload(sys.argv[2])
             print(least_significant_bit(stego_image,prepared_payload))
         else: # When user first inserts payload and then picture
             stego_image = load_image(sys.argv[2])
-            prepared_payload = prepare_payload(sys.argv[1])
+            prepared_payload = load_payload(sys.argv[1])
             print(least_significant_bit(stego_image,prepared_payload))
 
 if __name__ == "__main__":

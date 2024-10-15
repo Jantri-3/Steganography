@@ -20,8 +20,8 @@ Outputfile = "payload.txt"
 pifile = "pi_decimals.txt"
 
 def split_string(str):
-    # We split the string into chunks of 190 characters this number should be changed depending on the pair of keys legnght used!!!
-    return [str[i:i+190] for i in range(0, len(str), 190)]
+    # We split the string into chunks of 185 characters this number should be changed depending on the pair of keys legnght used!!!
+    return [str[i:i+185] for i in range(0, len(str), 185)]
 
 #Step 1 cipher text
 def cipher(contents):
